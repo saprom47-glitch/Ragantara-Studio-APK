@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101611">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon.png">
+<title>Ragantara Skill V2 — Prompt Video Generator</title>
+<style>
+:root{--bg:#101611;--panel:#1b241d;--panel2:#222e25;--text:#edf4eb;--muted:#b4c2b2;--accent:#a8d58c;--line:#3a4b3b}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(145deg,#0d120e,#18231a 60%,#101611);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:960px;margin:auto;padding:24px 16px 40px}
+header{margin-bottom:22px;display:flex;gap:14px;align-items:center}header .brand-icon{width:76px;height:76px;object-fit:cover;border-radius:18px;border:2px solid #a8d58c;flex-shrink:0}header .brand-text{min-width:0}h1{font-size:clamp(1.5rem,4vw,2.3rem);margin:0 0 6px}header p{color:var(--muted);margin:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}
+h2{font-size:1.1rem;margin:0 0 14px;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+label{display:block;font-weight:650;font-size:.92rem;margin:0 0 6px}
+input,select,textarea{width:100%;background:#111914;color:var(--text);border:1px solid #4a5d4a;border-radius:10px;padding:11px 12px;font:inherit}
+textarea{resize:vertical;min-height:100px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.field{min-width:0}.wide{grid-column:1/-1}
+.hint{font-size:.82rem;color:var(--muted);margin-top:5px}
+.checkrow{display:flex;gap:10px;align-items:center;margin-top:10px;color:var(--muted)}.checkrow input{width:auto}
+.buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button{border:0;border-radius:10px;padding:12px 16px;font:700 1rem system-ui;cursor:pointer}
+.primary{background:var(--accent);color:#152012}.secondary{background:#334336;color:var(--text);border:1px solid #536954}
+.output{min-height:250px;white-space:pre-wrap;overflow-wrap:anywhere}
+.note{color:var(--muted);font-size:.88rem}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.wide{grid-column:auto}.card{padding:14px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<img class="brand-icon" src="icons/icon-192.png" alt="Ikon Ragantara">
+<div class="brand-text"><h1>Ragantara Studio</h1>
+<p>Form interaktif untuk menyusun prompt video Ragantara yang konsisten. Isi cerita, pilih opsi, lalu tekan <b>Generate Prompt</b>.</p></div>
+</header>
+
+<section class="card">
+<h2>1. Detail video</h2>
+<div class="grid">
+<div class="field"><label for="title">Judul / nama scene (opsional)</label><input id="title" placeholder="Contoh: Akar Pohon Misterius"></div>
+<div class="field"><label for="duration">Durasi video</label><select id="duration"><option>8 detik</option><option>10 detik</option><option>15 detik</option><option selected>18 detik</option><option>20 detik</option><option>22 detik</option><option>30 detik</option><option>60 detik</option><option value="custom">Durasi khusus…</option></select><input id="customDuration" type="number" min="1" max="300" placeholder="Masukkan durasi dalam detik" style="display:none;margin-top:8px"></div>
+<div class="field"><label for="ratio">Rasio aspek</label><select id="ratio"><option selected>9:16 vertical</option><option>16:9 horizontal</option><option>1:1 square</option><option>4:5 portrait</option></select></div>
+<div class="field"><label for="scene">Scene</label><select id="scene"><option>Scene 1</option><option selected>Scene 2</option><option>Scene 3</option><option>Scene 4</option><option>Scene 5</option><option>Multi-scene</option></select></div>
+<div class="field"><label for="style">Gaya visual</label><select id="style"><option selected>Animasi fantasi 3D sinematik, detail tinggi</option><option>3D fantasy animation, realistic cinematic</option><option>3D cartoon fantasy, family-friendly</option><option>Dark cinematic fantasy</option></select></div>
+<div class="field"><label for="lighting">Pencahayaan</label><select id="lighting"><option selected>Pencahayaan alami dramatis</option><option>Sinar matahari menembus kanopi hutan</option><option>Golden hour hangat</option><option>Hutan berkabut dengan cahaya lembut</option><option>Moonlight misterius</option></select></div>
+<div class="field"><label for="camera">Jenis kamera</label><select id="camera"><option selected>Tracking shot sinematik</option><option>Wide establishing shot</option><option>Medium shot</option><option>Close-up ekspresi</option><option>Low-angle heroic shot</option><option>Side-follow shot</option><option>Dynamic action shot</option><option>Pergerakan kamera halus mengikuti aksi</option></select></div>
+<div class="field"><label for="emotion">Emosi / suasana Ragantara</label><select id="emotion"><option selected>Tenang dan waspada</option><option>Bijaksana dan penasaran</option><option>Terkejut</option><option>Berani dan sigap</option><option>Misterius dan mengancam</option><option>Lembut dan bersahabat</option><option>Gembira</option></select></div>
+<div class="field wide"><label for="location">Lokasi / suasana latar</label><input id="location" value="Hutan misterius, pepohonan tua, akar berlumut, kabut tipis dan dedaunan alami"></div>
+<div class="field wide"><label for="story">Cerita / aksi Ragantara (textbox utama)</label><textarea id="story" placeholder="Tuliskan cerita dengan urutan aksi yang diinginkan. Contoh: Ragantara berjalan di hutan, melihat pohon aneh dan mendekatinya. Akar pohon bergerak menjulur hampir meraih Ragantara. Ragantara melesat cepat menghindar."></textarea><div class="hint">Prompt akan merangkai cerita ini bersama identitas karakter, visual, kamera, durasi, dan negative prompt.</div></div>
+<div class="field wide"><label for="extra">Detail tambahan (opsional)</label><textarea id="extra" style="min-height:75px" placeholder="Contoh: gerakan akar terlihat organik, tidak ada dialog, suara ambience hutan, akhir scene menggantung."></textarea></div>
+</div>
+<label class="checkrow"><input type="checkbox" id="includeNegative" checked> Sertakan Negative Prompt</label>
+<label class="checkrow"><input type="checkbox" id="includeIndonesian"> Sertakan versi prompt bahasa Indonesia</label>
+<div class="buttons"><button class="primary" id="generate">✨ Generate Prompt</button><button class="secondary" id="clear">Reset Form</button></div>
+</section>
+
+<section class="card">
+<h2>2. Prompt video hasil generate</h2>
+<textarea id="output" class="output" readonly placeholder="Prompt lengkap akan tampil di sini setelah tombol Generate Prompt ditekan."></textarea>
+<div class="buttons"><button class="primary" id="copy">📋 Copy Prompt</button><button class="secondary" id="selectAll">Pilih Semua</button></div>
+<p class="note" id="status" aria-live="polite"></p>
+</section>
+
+<section class="card">
+<h2>Identitas karakter tetap (Ragantara V2)</h2>
+<p class="note">Ragantara adalah makhluk fantasi perpaduan naga dan serigala berkaki empat. Kepala naga dengan moncong tegas; tepat dua tanduk utama panjang melengkung ke belakang; bulu hitam arang tebal dan runcing di kepala, leher, bahu, dan punggung; mata tajam dan bijaksana; tubuh atletis; empat kaki kuat bercakar; ekor panjang berbulu dengan ujung spiral. Pertahankan desain, proporsi, warna, dan bentuknya sepanjang video. Gunakan gambar referensi Ragantara V2 pada generator video yang Anda pakai.</p>
+</section>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const character = "Ragantara is a fantasy quadrupedal dragon-wolf hybrid. He has a defined dragon-like head with a strong angular snout, exactly two long primary horns curving backward, thick layered and pointed charcoal-black fur on the head, neck, shoulders and back, sharp wise intelligent eyes, an athletic body, four powerful legs with dark claws, and a long furry tail with a spiral-curled tip. Preserve his exact design, silhouette, proportions, colors, horns, face, fur, claws and tail consistently throughout the video. No character redesign.";
+const negative = "extra horns, more than two primary horns, missing horns, forward-facing horns, wings, humanoid body, bipedal standing, extra or missing legs, duplicated limbs, deformed anatomy, inconsistent character, changing fur color, bright colorful scales, short tail, straight tail tip, missing spiral curl, different head shape, short snout, armor, clothes, accessories, character redesign, inconsistent proportions, low detail, blurry face, cropped horns, cropped feet, cropped tail, plastic texture, flickering, morphing, jitter, abrupt camera movement.";
+function duration(){return $("duration").value==="custom" ? ($("customDuration").value||"18")+" detik" : $("duration").value;}
+function generate(){
+ const story=$("story").value.trim();
+ if(!story){$("status").textContent="Silakan masukkan cerita atau aksi Ragantara terlebih dahulu."; $("story").focus();return;}
+ const title=$("title").value.trim();
+ const titleLine=title ? "Scene title: "+title+".\n" : "";
+ const prompt=`${titleLine}VIDEO PROMPT — ${$("scene").value}\nDuration: ${duration()}. Aspect ratio: ${$("ratio").value}.\n\nCHARACTER REFERENCE AND CONSISTENCY:\nUse the supplied Ragantara V2 reference image as the strict visual reference. ${character}\n\nSCENE AND ACTION:\n${story}\n\nENVIRONMENT:\n${$("location").value.trim()||"A mysterious natural forest"}.\n\nVISUAL STYLE AND MOOD:\n${$("style").value}. ${$("lighting").value}. Ragantara's mood and expression: ${$("emotion").value}. High-detail cinematic materials, detailed fur and natural forest environment, atmospheric depth and dramatic composition.\n\nCAMERA:\n${$("camera").value}. Smooth coherent camera movement, keep Ragantara clearly visible and preserve the full character silhouette when practical. Natural anatomically correct quadruped motion, clear action staging and temporal continuity.\n\nADDITIONAL DETAILS:\n${$("extra").value.trim()||"No extra details specified."}\n\nFORMAT AND QUALITY:\n${$("ratio").value}, high detail, cinematic fantasy animation, consistent character identity from beginning to end. Animate only the actions, pose, expression and gaze; do not alter Ragantara's design.${$("includeNegative").checked ? "\n\nNEGATIVE PROMPT:\n"+negative : ""}`;
+ let result=prompt;
+ if($("includeIndonesian").checked){
+  result += `\n\n--- VERSI BAHASA INDONESIA ---\nPROMPT VIDEO — ${$("scene").value}\nDurasi: ${duration()}. Rasio: ${$("ratio").value}.\n\nREFERENSI DAN KONSISTENSI KARAKTER:\nGunakan gambar referensi Ragantara V2 sebagai acuan visual yang ketat. Ragantara adalah makhluk fantasi perpaduan naga-serigala berkaki empat. Kepala naga dengan moncong tegas, tepat dua tanduk utama panjang melengkung ke belakang, bulu hitam arang tebal dan runcing pada kepala, leher, bahu dan punggung, mata tajam bijaksana, tubuh atletis, empat kaki kuat bercakar, serta ekor panjang berbulu dengan ujung spiral. Pertahankan desain, siluet, proporsi, warna, tanduk, wajah, bulu, cakar dan ekornya secara konsisten. Jangan mendesain ulang karakter.\n\nCERITA DAN AKSI:\n${story}\n\nLINGKUNGAN:\n${$("location").value.trim()||"Hutan misterius alami"}.\n\nGAYA VISUAL DAN SUASANA:\n${$("style").value}; ${$("lighting").value}; ekspresi Ragantara ${$("emotion").value}. Detail tinggi, tekstur bulu dan lingkungan alami, komposisi sinematik dramatis.\n\nKAMERA:\n${$("camera").value}. Gerakan kamera halus dan koheren. Gerakan Ragantara alami secara anatomi sebagai hewan berkaki empat. Jaga kesinambungan aksi dan identitas karakter.\n\nDETAIL TAMBAHAN:\n${$("extra").value.trim()||"Tidak ada detail tambahan."}\n\nFORMAT:\n${$("ratio").value}, animasi fantasi sinematik detail tinggi. Hanya animasikan aksi, pose, ekspresi dan arah pandang; jangan mengubah desain Ragantara.`;
+ }
+ $("output").value=result;
+ $("status").textContent="Prompt berhasil dibuat. Anda dapat menyalin dan menggunakannya di tool video AI.";
+}
+$("duration").addEventListener("change",()=>{$("customDuration").style.display=$("duration").value==="custom"?"block":"none";});
+$("generate").addEventListener("click",generate);
+$("copy").addEventListener("click",async()=>{if(!$("output").value){$("status").textContent="Generate prompt terlebih dahulu.";return;}try{await navigator.clipboard.writeText($("output").value);$("status").textContent="Prompt berhasil disalin."; }catch(e){$("output").focus();$("output").select();$("status").textContent="Prompt dipilih. Silakan salin secara manual."; }});
+$("selectAll").addEventListener("click",()=>{$("output").focus();$("output").select();$("status").textContent="Semua prompt telah dipilih.";});
+$("clear").addEventListener("click",()=>{if(confirm("Reset semua isian form?")){document.querySelectorAll("input,textarea").forEach(el=>{if(el.type==="checkbox")el.checked=el.id==="includeNegative";else el.value="";});$("duration").value="18 detik";$("ratio").value="9:16 vertical";$("scene").value="Scene 2";$("style").selectedIndex=0;$("lighting").selectedIndex=0;$("camera").selectedIndex=0;$("emotion").selectedIndex=0;$("location").value="Hutan misterius, pepohonan tua, akar berlumut, kabut tipis dan dedaunan alami";$("customDuration").style.display="none";$("output").value="";$("status").textContent="Form telah direset."; }});
+</script>
+<script>if("serviceWorker" in navigator && location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
+</body>
+</html>
